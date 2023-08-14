@@ -7,11 +7,16 @@ import SignupPage from "./pages/SignupPage";
 import Cart from "./features/cart/Cart";
 import Checkout from "./pages/Checkout";
 import ProdctDetailsPage from "./pages/ProductDetailPage";
+import Protected from "./features/auth/components/Protected";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: (
+      <Protected>
+        <Home/>
+      </Protected>
+    ),
   },
   {
     path: "/login",
@@ -23,15 +28,27 @@ const router = createBrowserRouter([
   },
   {
     path: "/cart",
-    element: <Cart />,
+    element: (
+      <Protected>
+        <Cart />
+      </Protected>
+    ),
   },
   {
     path: "/checkout",
-    element: <Checkout />,
+    element: (
+      <Protected>
+        <Checkout />
+      </Protected>
+    ),
   },
   {
-    path: "/product-detail",
-    element: <ProdctDetailsPage />,
+    path: "/product-detail/:id",
+    element: (
+      <Protected>
+        <ProdctDetailsPage />
+      </Protected>
+    ),
   },
 ]);
 
