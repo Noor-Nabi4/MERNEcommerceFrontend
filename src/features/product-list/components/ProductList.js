@@ -57,7 +57,6 @@ export default function ProductList() {
     label: b,
     checked: false,
   })); */
-  console.log(Categories);
   const filters = [
     {
       id: "brand",
@@ -87,7 +86,6 @@ export default function ProductList() {
       newFilter[section.id].splice(index, 1);
     }
     setFilter(newFilter);
-    console.log(newFilter);
   };
   const handleSort = (e, option) => {
     const sort = { _sort: option.sort, _order: option.order };

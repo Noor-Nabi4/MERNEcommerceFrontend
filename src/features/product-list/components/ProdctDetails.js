@@ -44,8 +44,10 @@ const ProdctDetails = () => {
     dispatch(fetchProductByIdAsync(parms.id));
   }, [dispatch, parms]);
   const handleCart = (e) => {
+    const newItem = { ...product, quantity: 1, user: user.id };
+    delete newItem["id"];
     e.preventDefault();
-    dispatch(addToCartAsync({ ...product, quantity: 1, user: user.id }));
+    dispatch(addToCartAsync(newItem));
   };
   return (
     <div className="bg-white">
