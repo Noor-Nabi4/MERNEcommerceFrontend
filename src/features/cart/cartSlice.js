@@ -4,6 +4,7 @@ import {
   fetchCartItmstByUserId,
   deleteCartItem,
   updateCartItem,
+  resetCart,
 } from "./cartAPI";
 
 const initialState = {
@@ -11,11 +12,6 @@ const initialState = {
   items: [],
 };
 
-// The function below is called a thunk and allows us to perform async logic. It
-// can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
-// will call the thunk with the `dispatch` function as the first argument. Async
-// code can then be executed and other actions can be dispatched. Thunks are
-// typically used to make async requests.
 export const addToCartAsync = createAsyncThunk(
   "cart/addToCart",
   async (item) => {
@@ -24,9 +20,17 @@ export const addToCartAsync = createAsyncThunk(
     return response.data;
   }
 );
+export const resetCartAsync = createAsyncThunk(
+  "cart/resetCart",
+  async (userId) => {
+    const response = await resetCart(userId);
+    // The value we return becomes the `fulfilled` action payload
+    return response.data;
+  }
+);
 
 export const fetchCartItmstByUserIdAsync = createAsyncThunk(
-  "cart",
+  "cart/Items",
   async (userId) => {
     const response = await fetchCartItmstByUserId(userId);
     // The value we return becomes the `fulfilled` action payload
@@ -94,6 +98,13 @@ export const cartSlice = createSlice({
           (item) => item.id === action.payload.id
         );
         state.items.splice(index, 1);
+      })
+      .addCase(resetCartAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(resetCartAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.items = [];
       });
   },
 });

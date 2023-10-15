@@ -2,7 +2,7 @@
 export function createUser(userData) {
   try {
     return new Promise(async (resolve) => {
-      const response = await fetch("http://localhost:8080/users", {
+      const response = await fetch("http://localhost:8080/auth/signup", {
         method: "POST",
         body: JSON.stringify(userData),
         headers: {
@@ -17,39 +17,30 @@ export function createUser(userData) {
   }
 }
 
-export function checkUser({ email, password }) {
+export function checkUser(loginInfo) {
   try {
     return new Promise(async (resolve, reject) => {
-      const response = await fetch(
-        `http://localhost:8080/users?email=${email}`
-      );
-      const data = await response.json();
-      if (data.length) {
-        if (password === data[0].password) {
-          resolve({ data: data[0] });
-        } else {
-          reject("user not found");
-        }
+      const response = await fetch(`http://localhost:8080/auth/login`, {
+        method: "POST",
+        body: JSON.stringify(loginInfo),
+        headers: { "Content-Type": "application/json" },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        resolve({ data });
       } else {
-        reject("user not found");
+        const err = await response.json();
+        reject({ err });
       }
     });
   } catch (error) {
     console.log(error);
   }
 }
-export function UpdateUser(update) {
+export function signOut(userId) {
   try {
-    return new Promise(async (resolve) => {
-      const response = await fetch("http://localhost:8080/users/"+update.id, {
-        method: "PATCH",
-        body: JSON.stringify(update),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await response.json();
-      resolve({ data });
+    return new Promise(async (resolve, reject) => {
+      resolve({ data: "success" });
     });
   } catch (error) {
     console.log(error);

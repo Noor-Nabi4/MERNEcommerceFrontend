@@ -18,7 +18,7 @@ export function addToCart(item) {
 }
 export function fetchCartItmstByUserId(userId) {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/cart?user="+userId);
+    const response = await fetch("http://localhost:8080/cart?user=" + userId);
     const data = await response.json();
     resolve({ data });
   });
@@ -26,7 +26,7 @@ export function fetchCartItmstByUserId(userId) {
 export function updateCartItem(update) {
   try {
     return new Promise(async (resolve) => {
-      const response = await fetch("http://localhost:8080/cart/"+update.id, {
+      const response = await fetch("http://localhost:8080/cart/" + update.id, {
         method: "PATCH",
         body: JSON.stringify(update),
         headers: {
@@ -40,18 +40,32 @@ export function updateCartItem(update) {
     console.log(error);
   }
 }
-
 export function deleteCartItem(itemId) {
   try {
     return new Promise(async (resolve) => {
-      const response = await fetch("http://localhost:8080/cart/"+itemId, {
+      const response = await fetch("http://localhost:8080/cart/" + itemId, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
       });
       const data = await response.json();
-      resolve({ data:{id:itemId} });
+      resolve({ data: { id: itemId } });
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export function  resetCart(userId) {
+  try {
+    return new Promise(async (resolve) => {
+      const response = await fetchCartItmstByUserId(userId);
+      const items = response.data;
+      for (let item of items) {
+        await deleteCartItem(item.id);
+      }
+      resolve({status:"success"});
     });
   } catch (error) {
     console.log(error);

@@ -36,27 +36,12 @@ function classNames(...classes) {
 }
 export default function ProductList() {
   const dispatch = useDispatch();
-  /* The above code is creating a list of filters for products. It starts by getting all the products
-  using the `useSelector` hook. Then, it creates a list of unique categories and brands from the
-  products. The categories are transformed by replacing "-" with a space. Finally, it creates an
-  array of filter objects, each containing an id, name, and options. The options include the brands
-  and categories with a checked property set to false. */
+  
   const products = useSelector(slectAllProducts);
   const totalItems = useSelector(slectTotalItems);
   const Categories = useSelector(slectCategories);
   const brands = useSelector(slectBrands);
-  /*  let Categories = [...new Set([...products.map((p) => p.category)])];
-  Categories = Categories.map((c) => ({
-    value: c,
-    label: c.split("-").join(" "),
-    checked: false,
-  })); */
-  /* let brands = [...new Set([...products.map((p) => p.brand)])];
-  brands = brands.map((b) => ({
-    value: b,
-    label: b,
-    checked: false,
-  })); */
+  
   const filters = [
     {
       id: "brand",
@@ -442,6 +427,7 @@ const Pagination = ({ page, setPage, handlePage, totalItems }) => {
             </div>
             {Array.from({ length: totalPages }).map((el, index) => (
               <div
+              key={index}
                 onClick={(e) => handlePage(e, index + 1)}
                 aria-current="page"
                 className={`cursor-pointer relative z-10 inline-flex items-center ${

@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { newOrderAsync } from "./orderSlice";
+import React from 'react'
 
-export default function Order() {
-  const dispatch = useDispatch();
-
-  return <div></div>;
+const Order = () => {
+  return (
+    <div>Order</div>
+  )
 }
+
+export default Order

@@ -12,9 +12,12 @@ import {
 } from "../features/cart/cartSlice";
 import {
   UpdateUserAsync,
-  selectLoggedInUser,
-} from "../features/auth/authSlice";
-import { newOrderAsync } from "../features/order/orderSlice";
+} from "../features/user/userSlice";
+import {
+  createOrderAsync,
+  selectCurrentOrder,
+} from "../features/order/orderSlice";
+import { selectUserInfo } from "../features/user/userSlice";
 
 const Checkout = () => {
   const {
@@ -25,10 +28,11 @@ const Checkout = () => {
   } = useForm();
   const [open, setOpen] = useState(true);
   const dispatch = useDispatch();
-  const user = useSelector(selectLoggedInUser);
+  const user = useSelector(selectUserInfo);
   const cartItems = useSelector(selectCartItems);
+  const CurrentOrder = useSelector(selectCurrentOrder);
   const totalPrice = cartItems.reduce(
-    (amount, item) => item.price * item.quantity + amount,
+    (amount, item) => item.product.price * item.quantity + amount,
     0
   );
   const totalItems = cartItems.reduce(
@@ -38,7 +42,7 @@ const Checkout = () => {
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [PaymentMethod, setPaymentMethod] = useState("cash");
   const handleQuantityChange = (e, item) => {
-    dispatch(updateCartItemAsync({ ...item, quantity: +e.target.value }));
+    dispatch(updateCartItemAsync({ id:item.id, quantity: +e.target.value }));
   };
   const handleItemDelete = (e, itemId) => {
     dispatch(deleteCartItemAsync(itemId));
@@ -50,15 +54,27 @@ const Checkout = () => {
     setPaymentMethod(e.target.value);
   };
   const handleOrder = (e) => {
-    const order = { cartItems, totalPrice, totalItems ,user, PaymentMethod,selectedAddress};
-    dispatch(newOrderAsync(order));
+    const order = {
+      items:cartItems,
+      totalPrice,
+      totalItems,
+      user:user.id,
+      PaymentMethod,
+      selectedAddress,
+      status: "Pending",
+    };
+    dispatch(createOrderAsync(order));
   };
   return (
     <>
       {!cartItems.length && <Navigate to="/" replace={true} />}
+      {CurrentOrder && (
+        <Navigate to={`/order-success/${CurrentOrder.id}`} replace={true} />
+      )}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5">
           <div className="lg:col-span-3">
+            {/* addresses form */}
             <form
               className="bg-white px-5 py-12 mt-12"
               noValidate
@@ -238,7 +254,7 @@ const Checkout = () => {
                   <p className="mt-1 text-sm leading-6 text-gray-600">
                     Choose from Existing addresses
                   </p>
-                  <ul role="list">
+                  <ul>
                     {user.addresses.map((address, index) => (
                       <li
                         key={index}
@@ -333,13 +349,13 @@ const Checkout = () => {
                   Cart
                 </h1>
                 <div className="flow-root">
-                  <ul role="list" className="-my-6 divide-y divide-gray-200">
+                  <ul className="-my-6 divide-y divide-gray-200">
                     {cartItems.map((item) => (
                       <li key={item.id} className="flex py-6">
                         <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                           <img
-                            src={item.thumbnail}
-                            alt={item.title}
+                            src={item.product.thumbnail}
+                            alt={item.product.title}
                             className="h-full w-full object-cover object-center"
                           />
                         </div>
@@ -348,12 +364,12 @@ const Checkout = () => {
                           <div>
                             <div className="flex justify-between text-base font-medium text-gray-900">
                               <h3>
-                                <a href={item.href}>{item.title}</a>
+                                <a href={item.product.href}>{item.product.title}</a>
                               </h3>
-                              <p className="ml-4">{item.price}</p>
+                              <p className="ml-4">{item.product.price}</p>
                             </div>
                             <p className="mt-1 text-sm text-gray-500">
-                              {item.brand}
+                              {item.product.brand}
                             </p>
                           </div>
                           <div className="flex flex-1 items-end justify-between text-sm">
@@ -364,13 +380,6 @@ const Checkout = () => {
                               >
                                 Qty
                               </label>
-                              {/* <input
-                          type="number"
-                          id="quantity"
-                          name="quantity"
-                          className="w-20"
-                          
-                        /> */}
                               <select
                                 onChange={(e) => handleQuantityChange(e, item)}
                                 value={item.quantity}

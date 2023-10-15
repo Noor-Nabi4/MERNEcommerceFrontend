@@ -44,8 +44,7 @@ const ProdctDetails = () => {
     dispatch(fetchProductByIdAsync(parms.id));
   }, [dispatch, parms]);
   const handleCart = (e) => {
-    const newItem = { ...product, quantity: 1, user: user.id };
-    delete newItem["id"];
+    const newItem = { product: product.id, quantity: 1, user: user.id };
     e.preventDefault();
     dispatch(addToCartAsync(newItem));
   };
@@ -54,10 +53,7 @@ const ProdctDetails = () => {
       {product && (
         <div className="pt-6">
           <nav aria-label="Breadcrumb">
-            <ol
-              role="list"
-              className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8"
-            >
+            <ol className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
               {product.breadcrumbs &&
                 product.breadcrumbs.map((breadcrumb) => (
                   <li key={breadcrumb.id}>
@@ -318,7 +314,7 @@ const ProdctDetails = () => {
                 </h3>
 
                 <div className="mt-4">
-                  <ul role="list" className="list-disc space-y-2 pl-4 text-sm">
+                  <ul className="list-disc space-y-2 pl-4 text-sm">
                     {highlights &&
                       highlights.map((highlight) => (
                         <li key={highlight} className="text-gray-400">
