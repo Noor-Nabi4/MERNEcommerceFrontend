@@ -17,7 +17,7 @@ import {
   createOrderAsync,
   selectCurrentOrder,
 } from "../features/order/orderSlice";
-import { selectUserInfo } from "../features/user/userSlice";
+import { selectLoggedInUser } from "../features/auth/authSlice";
 
 const Checkout = () => {
   const {
@@ -28,7 +28,7 @@ const Checkout = () => {
   } = useForm();
   const [open, setOpen] = useState(true);
   const dispatch = useDispatch();
-  const user = useSelector(selectUserInfo);
+  const user = useSelector(selectLoggedInUser);
   const cartItems = useSelector(selectCartItems);
   const CurrentOrder = useSelector(selectCurrentOrder);
   const totalPrice = cartItems.reduce(

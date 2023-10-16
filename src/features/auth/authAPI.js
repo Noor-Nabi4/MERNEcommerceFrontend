@@ -17,7 +17,7 @@ export function createUser(userData) {
   }
 }
 
-export function checkUser(loginInfo) {
+export function login(loginInfo) {
   try {
     return new Promise(async (resolve, reject) => {
       const response = await fetch(`http://localhost:8080/auth/login`, {

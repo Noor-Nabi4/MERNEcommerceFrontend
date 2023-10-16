@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
-import { UpdateUserAsync, selectUserInfo } from "../userSlice";
+import { UpdateUserAsync } from "../userSlice";
+import { selectLoggedInUser } from "../../auth/authSlice";
 
 const UserProfile = () => {
   const {
@@ -14,7 +15,7 @@ const UserProfile = () => {
   const [selectedEditAddressIndex, setSelectedEditAddressIndex] = useState(-1);
   const [ShowAddAddressForm, setShowAddAddressForm] = useState(false);
   const dispatch = useDispatch();
-  const user = useSelector(selectUserInfo);
+  const user = useSelector(selectLoggedInUser);
   const handleEdit = (data, index) => {
     const removeaddres = { ...user, addresses: [...user.addresses] };
     removeaddres.addresses.splice(index, 1, data);

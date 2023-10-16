@@ -15,7 +15,6 @@ import PageNotFound from "./pages/404";
 import OrderSuccessPage from "./pages/OrderSuccessPage";
 import UserOrderPage from "./pages/UserOrderPage";
 import UserProfilePage from "./pages/UserProfilePages";
-import { fetcLoggedInUserInfoAsync } from "./features/user/userSlice";
 import Logout from "./features/auth/components/Logout";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 
@@ -99,9 +98,7 @@ function App() {
   const user = useSelector(selectLoggedInUser);
   useEffect(() => {
     if (user) {
-    console.log(user);
-      dispatch(fetchCartItmstByUserIdAsync(user.id));
-      dispatch(fetcLoggedInUserInfoAsync(user.id));
+      dispatch(fetchCartItmstByUserIdAsync());
     }
   }, [dispatch, user]);
   return (
