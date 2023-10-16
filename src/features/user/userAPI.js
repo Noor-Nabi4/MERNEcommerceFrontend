@@ -8,7 +8,7 @@
 } */
 export function fetcLoggedInUserOrders(userId) {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/orders/" + userId);
+    const response = await fetch("/orders/" + userId);
     const data = await response.json();
     resolve({ data });
   });
@@ -16,7 +16,7 @@ export function fetcLoggedInUserOrders(userId) {
 export function UpdateUser(update) {
   try {
     return new Promise(async (resolve) => {
-      const response = await fetch("http://localhost:8080/user/", {
+      const response = await fetch("/user/", {
         method: "PUT",
         body: JSON.stringify(update),
         headers: {
