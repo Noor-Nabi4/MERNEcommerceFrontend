@@ -37,7 +37,23 @@ export function login(loginInfo) {
     console.log(error);
   }
 }
-export function signOut(userId) {
+export function CheckAuth() {
+  try {
+    return new Promise(async (resolve, reject) => {
+      const response = await fetch(`/auth/check`);
+      if (response.ok) {
+        const data = await response.json();
+        resolve({ data });
+      } else {
+        const err = await response.json();
+        reject({ err });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+export function signOut() {
   try {
     return new Promise(async (resolve, reject) => {
       resolve({ data: "success" });
