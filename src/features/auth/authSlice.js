@@ -112,7 +112,7 @@ export const userSlice = createSlice({
       })
       .addCase(UpdateAuthAsync.fulfilled, (state, action) => {
         state.status = "idle";
-        state.userInfo = action.payload;
+        state.authInfo = action.payload;
       });
   },
 });
