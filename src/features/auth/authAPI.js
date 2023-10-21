@@ -1,4 +1,4 @@
-// A mock function to mimic making an async request for data
+
 export function createUser(userData) {
   try {
     return new Promise(async (resolve) => {
@@ -62,3 +62,29 @@ export function signOut() {
     console.log(error);
   }
 }
+
+export function fetchAuthOrders() {
+  return new Promise(async (resolve) => {
+    const response = await fetch("/orders/");
+    const data = await response.json();
+    resolve({ data });
+  });
+}
+export function UpdateAuth(update) {
+  try {
+    return new Promise(async (resolve) => {
+      const response = await fetch("/user/", {
+        method: "PUT",
+        body: JSON.stringify(update),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      resolve({ data });
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+

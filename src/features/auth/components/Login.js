@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { loginAsync, selectError, selectLoggedInUser } from "../authSlice";
+import { loginAsync, selectAuthInfo, selectError } from "../authSlice";
 import { Link, Navigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 export default function Login() {
   const dispatch = useDispatch();
   const error = useSelector(selectError);
-  const user = useSelector(selectLoggedInUser);
+  const user = useSelector(selectAuthInfo);
   const {
     register,
     handleSubmit,

@@ -11,13 +11,10 @@ import {
   updateCartItemAsync,
 } from "../features/cart/cartSlice";
 import {
-  UpdateUserAsync,
-} from "../features/user/userSlice";
-import {
   createOrderAsync,
   selectCurrentOrder,
 } from "../features/order/orderSlice";
-import { selectLoggedInUser } from "../features/auth/authSlice";
+import { UpdateAuthAsync, selectAuthInfo } from "../features/auth/authSlice";
 
 const Checkout = () => {
   const {
@@ -28,7 +25,7 @@ const Checkout = () => {
   } = useForm();
   const [open, setOpen] = useState(true);
   const dispatch = useDispatch();
-  const user = useSelector(selectLoggedInUser);
+  const user = useSelector(selectAuthInfo);
   const cartItems = useSelector(selectCartItems);
   const CurrentOrder = useSelector(selectCurrentOrder);
   const totalPrice = cartItems.reduce(
@@ -42,7 +39,7 @@ const Checkout = () => {
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [PaymentMethod, setPaymentMethod] = useState("cash");
   const handleQuantityChange = (e, item) => {
-    dispatch(updateCartItemAsync({ id:item.id, quantity: +e.target.value }));
+    dispatch(updateCartItemAsync({ id: item.id, quantity: +e.target.value }));
   };
   const handleItemDelete = (e, itemId) => {
     dispatch(deleteCartItemAsync(itemId));
@@ -55,10 +52,10 @@ const Checkout = () => {
   };
   const handleOrder = (e) => {
     const order = {
-      items:cartItems,
+      items: cartItems,
       totalPrice,
       totalItems,
-      user:user.id,
+      user: user.id,
       PaymentMethod,
       selectedAddress,
       status: "Pending",
@@ -80,7 +77,7 @@ const Checkout = () => {
               noValidate
               onSubmit={handleSubmit((data) => {
                 dispatch(
-                  UpdateUserAsync({
+                  UpdateAuthAsync({
                     ...user,
                     addresses: [...user.addresses, data],
                   })
@@ -364,7 +361,9 @@ const Checkout = () => {
                           <div>
                             <div className="flex justify-between text-base font-medium text-gray-900">
                               <h3>
-                                <a href={item.product.href}>{item.product.title}</a>
+                                <a href={item.product.href}>
+                                  {item.product.title}
+                                </a>
                               </h3>
                               <p className="ml-4">{item.product.price}</p>
                             </div>

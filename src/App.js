@@ -10,13 +10,13 @@ import ProdctDetailsPage from "./pages/ProductDetailPage";
 import Protected from "./features/auth/components/Protected";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCartItmstByUserIdAsync } from "./features/cart/cartSlice";
-import { checkAuthAsync, selectcheckAuth, selectLoggedInUser } from "./features/auth/authSlice";
 import PageNotFound from "./pages/404";
 import OrderSuccessPage from "./pages/OrderSuccessPage";
 import UserOrderPage from "./pages/UserOrderPage";
 import UserProfilePage from "./pages/UserProfilePages";
 import Logout from "./features/auth/components/Logout";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import { checkAuthAsync, selectAuthInfo, selectcheckAuth } from "./features/auth/authSlice";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -95,7 +95,7 @@ const router = createBrowserRouter([
 function App() {
   const dispatch = useDispatch();
 
-  const user = useSelector(selectLoggedInUser);
+  const user = useSelector(selectAuthInfo);
   const checkAuth = useSelector(selectcheckAuth);
 
   useEffect(() => {

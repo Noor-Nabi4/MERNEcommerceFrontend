@@ -1,15 +1,15 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { signOutAsync, selectLoggedInUser } from "../authSlice";
+import { selectAuthInfo, signOutAsync } from "../authSlice";
 import { Navigate } from "react-router-dom";
 
 const Logout = () => {
   const dispatch = useDispatch();
-  const userId = useSelector(selectLoggedInUser);
+  const user = useSelector(selectAuthInfo);
   useEffect(() => {
-    dispatch(signOutAsync(userId));
+    dispatch(signOutAsync(user));
   }, []);
-  return <>{!userId && <Navigate to="/login" replace={true} />}</>;
+  return <>{!user && <Navigate to="/login" replace={true} />}</>;
 };
 
 export default Logout;

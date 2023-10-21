@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
-import { UpdateUserAsync } from "../userSlice";
-import { selectLoggedInUser } from "../../auth/authSlice";
+import { UpdateAuthAsync, selectAuthInfo } from "../../auth/authSlice";
 
 const UserProfile = () => {
   const {
@@ -15,17 +14,17 @@ const UserProfile = () => {
   const [selectedEditAddressIndex, setSelectedEditAddressIndex] = useState(-1);
   const [ShowAddAddressForm, setShowAddAddressForm] = useState(false);
   const dispatch = useDispatch();
-  const user = useSelector(selectLoggedInUser);
+  const user = useSelector(selectAuthInfo);
   const handleEdit = (data, index) => {
     const removeaddres = { ...user, addresses: [...user.addresses] };
     removeaddres.addresses.splice(index, 1, data);
-    dispatch(UpdateUserAsync(removeaddres));
+    dispatch(UpdateAuthAsync(removeaddres));
     setSelectedEditAddressIndex(-1);
   };
   const handleRemove = (e, index) => {
     const removeaddres = { ...user, addresses: [...user.addresses] };
     removeaddres.addresses.splice(index, 1);
-    dispatch(UpdateUserAsync(removeaddres));
+    dispatch(UpdateAuthAsync(removeaddres));
   };
   const hanleShowAddAddressForm = () => {
     setShowAddAddressForm(!ShowAddAddressForm);
@@ -33,7 +32,7 @@ const UserProfile = () => {
   };
   const handleAddAddress=(address)=>{
     const newAddress = { ...user, addresses: [...user.addresses,address] };
-    dispatch(UpdateUserAsync(newAddress));
+    dispatch(UpdateAuthAsync(newAddress));
     setShowAddAddressForm(false);
   }
   const handleEditForm = (index) => {
